@@ -1,6 +1,9 @@
 # vue-starter
 
-> 基于 [Vue](https://github.com/vuejs/vue) 的 [SPA](http://baike.baidu.com/item/SPA/17536313) 开发框架
+> 基于 [Vue](https://github.com/vuejs/vue) 的移动端 [SPA](http://baike.baidu.com/item/SPA/17536313) 开发框架
+
+## 简介
+
 
 ## 目录结构
 ```shell
@@ -13,14 +16,23 @@
 |   ├── api # api 目录
 |   ├── assets # 资源目录，包括 css、img 等
 |   ├── components # 组件
-|   ├── conf #配置项
-|   ├── routes # 页面路由，配合 Controller
-|   ├── static # 静态资源
-|   ├── app.js
-|   ├── startup.js # server 启动入口
+|   ├── config #配置项
+|   ├── libs # 第三方及 utils 工具库
+|   ├── router # 页面路由
+|   ├── store # 状态管理
+|   ├── views # 页面view
+|   ├── app.vue # vue 根实例
+|   ├── main.js # 入口
 |
+├── static 
+|   ├── data # json 假数据
+|
+├── index.html # html 入口文件
+├── package.json # 包管理
+├── README.md
 |
 ```
+## 
 ## Build Setup
 
 ``` bash
