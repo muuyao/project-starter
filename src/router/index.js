@@ -1,19 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import changeTitle from '@/libs/utils/change-title';
-import proxy from '@/libs/proxy';
+import hooks from './hooks';
 import homeRouter from './home';
-import qrcodeRouter from './qrcode';
-import detailRouter from './detail';
-import getCashRouter from './get-cash';
-import downloadRouter from './download';
-import selectBankcardRouter from './select-bankcard';
-import addBankcardRouter from './add-bankcard';
-import loginRouter from './login';
-import registerRouter from './register';
-import passwordRouter from './password';
-import protocolSecret from './protocol-secret';
-import protocolRegister from './protocol-register';
+import aboutRouter from './about';
 
 Vue.use(Router);
 
@@ -30,36 +19,16 @@ const router = new Router({
       y: 0
     };
   },
-  routes: [
+  routes: [{
+      path: '',
+      redirect: '/home'
+    },
     ...homeRouter,
-    ...qrcodeRouter,
-    ...detailRouter,
-    ...getCashRouter,
-    ...downloadRouter,
-    ...selectBankcardRouter,
-    ...addBankcardRouter,
-    ...loginRouter,
-    ...registerRouter,
-    ...passwordRouter,
-    ...protocolSecret,
-    ...protocolRegister
+    ...aboutRouter
   ]
 });
 
-// 改变 title
-router.afterEach((route) => {
-  const {
-    title,
-    className
-  } = route.meta;
-
-  changeTitle(title);
-
-  if (className) {
-    document.body.classList.add(className);
-  } else {
-    document.body.className = '';
-  }
-});
+// 添加导航钩子
+hooks(router);
 
 export default router;

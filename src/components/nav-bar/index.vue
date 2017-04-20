@@ -1,17 +1,12 @@
 <template>
-  <div class="nav-bar-wrapper" :class="appNavClass">
-    <div class="nav-bar-ios" v-if="os === 'IOS'"></div>
+  <div class="nav-bar-wrapper">
     <div class="nav-bar">
       <div class="nav-back" @click="goBack" v-if="isShowBack"><span class="nav-arrow"></span></div>
-      <div class="nav-title">{{$route.meta.title || '好友邀请'}}</div>
+      <div class="nav-title">{{$route.meta.title || 'Vue-Starter'}}</div>
     </div>
   </div>
 </template>
 <script>
-import {
-  mapState
-} from 'vuex';
-
 export default {
 
   name: 'nav-bar',
@@ -21,33 +16,11 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      os: state => state.app.os
-    }),
-    appNavClass() {
-      const {
-        os
-      } = this;
-      const arr = [];
-      if (os !== 'WEB') {
-        arr.push('nav-bar-app');
-      }
-
-      if (os === 'IOS') {
-        arr.push('nav-bar-app-ios');
-      }
-
-      if (os === 'ANDROID') {
-        arr.push('nav-bar-app-android');
-      }
-
-      return arr;
-    },
     isShowBack() {
       const {
         name
       } = this.$route;
-      return (name !== 'home') && (name !== 'download');
+      return name !== 'home';
     }
   },
 
@@ -72,16 +45,6 @@ export default {
   overflow: hidden;
 }
 
-.nav-bar-wrapper.nav-bar-app {
-  color: #66666e;
-  background-color: #fff;
-}
-
-.nav-bar-app.nav-bar-app-ios .nav-bar {
-  height: 44PX;
-}
-
-
 .nav-bar {
   height: 100px;
   padding: 0 30px;
@@ -99,16 +62,6 @@ export default {
 .nav-title {
   flex: 1;
   text-align: center;
-}
-
-.nav-bar-app .nav-arrow:before,
-.nav-bar-app .nav-arrow:after {
-  border-color: #40cbff;
-}
-
-.nav-bar-ios {
-  background-color: #fff;
-  height: 20PX;
 }
 
 

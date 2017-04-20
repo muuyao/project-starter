@@ -1,4 +1,6 @@
-const APIPREFIX = 'http://192.168.25.103:8080';
+const APIPREFIX =
+  process.env.NODE_ENV === 'production' ? 'http://compatibility-friend_invitation_api.qltest.com:8080' :  'http://192.168.25.103:8080';
+  console.log('niaho', process.env.NODE_ENV);
 /**
  * API 列表，最多允许两层嵌套
  * @type {Object}
