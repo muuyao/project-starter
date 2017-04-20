@@ -1,13 +1,24 @@
 import Vue from 'vue';
-import FastClick from 'fastclick'; // fix 点击延迟
+import FastClick from 'fastclick';
 import App from './app';
-import router from './router';
+import router from './routes';
 import store from './store';
+import Api from './api';
+import filters from './libs/filters';
 
-FastClick.attach(document.body);
+// 全局挂载 filter
+Object.keys(filters).forEach((key, index) => {
+  Vue.filter(key, filters[key]);
+});
 
 // promise polyfill
 require('es6-promise').polyfill();
+
+// fix 点击延迟
+FastClick.attach(document.body);
+
+// 挂载 Api, 在组件内可直接 this.$api 访问
+Vue.use(Api);
 
 Vue.config.productionTip = false;
 

@@ -5,6 +5,7 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
+var fs = require('fs')
 var opn = require('opn')
 var path = require('path')
 var express = require('express')
@@ -38,6 +39,19 @@ compiler.plugin('compilation', function (compilation) {
     cb()
   })
 })
+
+// mock api requests
+var mockDir = path.resolve(__dirname, '../mock');
+fs.readdirSync(mockDir).forEach(function (file) {
+  var mock = require(path.resolve(mockDir, file));
+  if(typeof mock.response === 'object'){
+    app.all(mock.api, function(req, res){
+      res.send(mock.response);
+    })
+  } else {
+    app.all(mock.api, mock.response);
+  }
+});
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {

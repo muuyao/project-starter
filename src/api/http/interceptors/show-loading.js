@@ -1,8 +1,6 @@
 import {
-  Indicator,
-  Toast
+  Indicator
 } from 'mint-ui';
-import axios from 'axios';
 
 let loadingCount = 0;
 
@@ -16,29 +14,22 @@ function showLoading() {
 }
 
 function closeLoading() {
-  if (loadingCount > 0) {
-    loadingCount--;
-  }
-
-  if (loadingCount === 0) {
+  loadingCount--;
+  if (loadingCount <= 0) {
     Indicator.close();
   }
 }
 
-function createAxios() {
-  const instance = axios.create({
-    timeout: 1000 * 10
-  });
-
+export default (instance) => {
   // Add a request interceptor
   instance.interceptors.request.use((config) => {
-    if (config.loading !== false) {
+    if (config.showLoading !== false) {
       showLoading();
     }
     return config;
   }, (error) => {
     // Do something with request error
-    if (error.config.loading !== false) {
+    if (error.config.showLoading !== false) {
       closeLoading();
     }
     return Promise.reject(error);
@@ -46,20 +37,16 @@ function createAxios() {
 
   // Add a response interceptor
   instance.interceptors.response.use((response) => {
-    if (response.config.loading !== false) {
+    if (response.config.showLoading !== false) {
       closeLoading();
     }
     return response;
   }, (error) => {
     // Do something with response error
-    if (error && error.config && error.config.loading !== false) {
+    if (error && error.config && error.config.showLoading !== false) {
       closeLoading();
     }
 
     return Promise.reject(error);
   });
-
-  return instance;
-}
-
-export default createAxios();
+};
