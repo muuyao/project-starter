@@ -11,6 +11,7 @@ var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
+var fs = require('fs')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -37,6 +38,19 @@ compiler.plugin('compilation', function (compilation) {
     hotMiddleware.publish({ action: 'reload' })
     cb()
   })
+})
+
+// mock api request
+var mockDir = path.resolve(__dirname, '../mock');
+fs.readdirSync(mockDir).forEach(function (file) {
+  var mock = require(path.resolve(mockDir, file));
+  if(typeof mock.response === 'object'){
+    app.all(mock.api, function(req, res){
+      res.send(mock.response);
+    })
+  } else {
+    app.all(mock.api, mock.response);
+  }
 })
 
 // proxy api requests
