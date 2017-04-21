@@ -24,6 +24,7 @@ export default {
 
 </script>
 <style lang="scss">
+@import './assets/scss/function';
 @import './assets/scss/partials/reset';
 #app {
   font-size: 24px;

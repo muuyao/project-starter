@@ -15,6 +15,7 @@
 - Chrome 插件： [Vue-devtools](https://github.com/vuejs/vue-devtools)
 
 ## 快速开始
+> 需安装 [Node.js](https://nodejs.org/en/), 版本 > 4.0.0
 
 ``` bash
 # 安装依赖
