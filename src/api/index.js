@@ -1,11 +1,5 @@
-import http from 'axios';
+import http from './http';
 import urls from './url-type';
-
-class Api {
-  constructor() {
-      this.http = http;
-    }
-};
 
 /**
  * 填充方法
@@ -20,14 +14,12 @@ function fillMethods(apiObj, urls) {
     const urlVal = urls[urlKey];
 
     if (typeof urlVal === 'string') {
-      apiObj[urlKey] = (params, config) => {
-
-      }
+      apiObj[urlKey] = assembleHttp(urlVal);
     } else {
-      apiObj[urlkey] = {};
+      apiObj[urlKey] = {};
       fillMethods(apiObj[urlKey], urlVal);
     }
-  })
+  });
 }
 
 /**
@@ -59,11 +51,26 @@ function assembleHttp(urlVal) {
       config.params = params;
     }
 
-    return http(config).then((response) => {
-      return response.data;
-    })
+    return http(config).then(response => response.data);
+  };
+}
+
+/**
+ * Api 类
+ */
+class Api {
+  constructor() {
+    this.http = http;
+  }
+  /**
+   * 作为Vue插件进行安装，挂载到Vue.prototype
+   */
+  install(Vue) {
+    Vue.prototype.$api = this;
   }
 }
+
+fillMethods(Api.prototype, urls);
 
 
 export default new Api();

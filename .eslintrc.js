@@ -53,6 +53,7 @@ module.exports = {
     'no-mixed-operators': ['error', {'allowSamePrecedence': true}],
     'space-before-function-paren': ['error', 'never'],
     'no-bitwise': 'off',
-    'no-underscore-dangle': 'off'
+    'no-underscore-dangle': 'off',
+    'no-console': ["error", { allow: ["warn", "error"] }]
   }
 }

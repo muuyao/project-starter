@@ -1,34 +1,46 @@
-import api from '@/api/qrcode';
+import api from '@/api';
 import * as types from '../mutation-types';
-
 
 // initial state
 const state = {
-  url: ''
+  profile: {
+    headIcon: '',
+    name: '',
+  },
+  detail: ''
 };
 
 const mutations = {
-  [types.GET_QRCODE_URL](state, {
-    url
-  }) {
-    state.url = url;
+  [types.GET_USER_PROFILE](state, profile) {
+    state.profile = profile;
+  },
+  [types.GET_USER_DETAIL](state, detail) {
+    state.detail = detail;
   }
 };
 
 const actions = {
-  getQRCodeUrl({
+  getUserProfile({
+    commit
+  }) {
+    api.user.getProfile().then((data) => {
+      commit(types.GET_USER_PROFILE, data.data);
+    });
+  },
+
+  getUserDetail({
     commit,
     state
-  }, {
-    url
   }) {
-    api.getQRCodeUrl({
-      url
-    }, (data) => {
-      const url = data.data && data.data.url;
-      commit(types.GET_QRCODE_URL, {
-        url
-      });
+    const {
+      profile: {
+        name
+      }
+    } = state;
+    api.user.getDetail({
+      name
+    }).then((data) => {
+      commit(types.GET_USER_DETAIL, data.data);
     });
   }
 };

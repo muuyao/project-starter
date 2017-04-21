@@ -12,6 +12,7 @@
 - 代码检测：[ESLint](http://eslint.org/)
 - 构建工具：[Webpack](https://webpack.js.org/)
 - 包管理工具：[Npm](https://www.npmjs.com/)
+- Chrome 插件： [Vue-devtools](https://github.com/vuejs/vue-devtools)
 
 ## 快速开始
 
@@ -34,14 +35,17 @@ npm run build --report
 ├── build # 构建脚本
 ├── config # 构建脚本配置文件
 ├── dist # 编译自动生成的部署文件
+├── mock # 数据mock
 ├── node_modules # npm 包
 │
 ├── src # 源文件目录
 │   ├── api # api 目录
+│   │   ├── index.js # 对外导出
+│   │   ├── url-types.js # 所有的url
+│   │   
 │   ├── assets # 资源目录，包括 css、img 等
 │   │   ├── img
 │   │   ├── scss
-│   │   ├── fonts
 │   │   ├── ...
 │   ├── components # 公共组件
 │   ├── config #配置项
@@ -57,19 +61,63 @@ npm run build --report
 │   ├── app.vue # vue 根实例
 │   ├── main.js # 入口
 │
-├── static 
-│   ├── data # mock json 数据
-│
 ├── index.html # html 入口文件
 ├── package.json # 包管理
 ├── README.md
+├── .babelrc # babel 配置文件
+├── .editorconfig # 编辑器基础配置同步
+├── .eslintrc # eslint 配置文件
+├── .postcssrc # postcss 插件配置，包括 autoprefixer、post-pxtorem等
 │
 ```
 ## 前后端分离
 ### API 请求抽离
-为实现分层，所有的API请求抽离到API目录中，
-### mock 数据
+为实现分层，所有的API请求抽离到API目录中
+用法如下：
+```
+# url-types.js 中定义所有的 API 接口
+export default {
+  user: {
+    getProfile: 'post|/user/getProfile',
+    getDetail: '/user/getDetail',
+  }
+};
 
+/**
+* 根据url-types.js 自动生成api接口， 接口为 Promise 形式
+*  生成接口有两个参数：
+* @param  {Object} params 请求参数
+* @param  {Object} config 请求配置-参见 [axios]
+*/ 
+import api from '@/api';
+api.user.getProfile(params, config).then((data)=>{
+})
+```
+### mock 数据
+>   前后端分离后，开发前需要和后端同学定义好接口信息（请求地址，参数，返回信息等），前端通过 mock 的方式，即可开始编码，无需等待后端接口 ready。
+
+我们利用 express 中间件机制添加 mock 功能，在 mock 目录下添加文件， 每个接口对应一个文件, 文件内容如下:
+```
+module.exports = {
+  // 接口地址
+  api: '/user/getProfile',
+  // 返回数据
+  response: {
+      status: 1,
+      data: {
+          name: 'vue'
+      }
+  }
+}
+```
+在 config 的 dev 中进行开启或关闭
+```
+dev: {
+    env: require('./dev.env'),
+    ...
+    mock: false // 是否开始数据mock
+  }
+```
 ## 移动端适配
 >   项目采用 REM 进行适配处理，动态给`<html>`元素添加`font-size`属性，并且动态改写`font-size`的值
 
