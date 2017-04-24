@@ -2,6 +2,7 @@ import axios from 'axios';
 import config from '@/config';
 import showLoading from './interceptors/show-loading';
 import errorHandler from './interceptors/error-handler';
+import cache from './interceptors/cache';
 
 const instance = axios.create({
   baseURL: config.baseURL,

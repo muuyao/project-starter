@@ -37,8 +37,11 @@ const actions = {
         name
       }
     } = state;
+
     api.user.getDetail({
       name
+    }, {
+      showLoading: false
     }).then((data) => {
       commit(types.GET_USER_DETAIL, data.data);
     });

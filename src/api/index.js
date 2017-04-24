@@ -1,4 +1,4 @@
-import http from './http';
+import http from '@/libs/http';
 import urls from './url-type';
 
 /**
